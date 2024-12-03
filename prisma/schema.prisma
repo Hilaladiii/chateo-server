@@ -1,0 +1,62 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model User{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  username String 
+  password String
+  isVerified Boolean
+  verificationCode Int
+  createdAt DateTime @default(now())
+  accessToken String?
+
+  seenIds String[] @db.ObjectId
+  seen Message[] @relation("seens", fields: [seenIds], references: [id])
+
+  conversationIds String[] @db.ObjectId
+  conversations Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  messages Message[]
+  
+
+  @@map("users")
+}
+
+model Message{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  content String?
+  image String?
+
+  seenIds String[] @db.ObjectId
+  seen User[] @relation("seens", fields: [seenIds], references: [id])
+
+  senderId String @db.ObjectId
+  sender User @relation(fields: [senderId], references: [id], onDelete : Cascade)
+
+  conversationId String @db.ObjectId
+  conversation Conversation @relation(fields: [conversationId], references: [id])
+
+  @@map("messages")
+}
+
+model Conversation{
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  name String?
+  createdAt DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  isGroup Boolean? @default(false)
+
+  userIds String[] @db.ObjectId
+  user User[] @relation(fields: [userIds], references: [id])
+
+  messages Message[]
+
+  @@map("conversations")
+}
