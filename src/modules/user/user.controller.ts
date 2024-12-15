@@ -3,6 +3,7 @@ import {
   Body,
   Controller,
   Get,
+  Param,
   Post,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dtos/register-user.dto';
@@ -23,6 +24,12 @@ export class UserController {
       throw new BadRequestException('User with this email already exist!');
 
     return this.userService.register(registeruserDto);
+  }
+
+  @Post('/verify/:email/:code')
+  @Message('Success verify your account')
+  async verifyUser(@Param('email') email: string, @Param('code') code: number) {
+    this.userService.verifiyUser(email, code);
   }
 
   @Get('profile')

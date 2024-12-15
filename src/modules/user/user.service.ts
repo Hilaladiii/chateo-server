@@ -79,4 +79,20 @@ export class UserService {
       },
     });
   }
+
+  async verifiyUser(email: string, code: number): Promise<Boolean> {
+    const user = await this.prismaService.user.findUnique({ where: { email } });
+    if (user.verificationCode != code) return false;
+
+    await this.prismaService.user.update({
+      where: {
+        email: user.email,
+      },
+      data: {
+        isVerified: true,
+      },
+    });
+
+    return true;
+  }
 }
