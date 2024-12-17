@@ -3,12 +3,14 @@ import {
   Body,
   Controller,
   Get,
-  Param,
+  HttpCode,
+  HttpStatus,
   Post,
 } from '@nestjs/common';
 import { RegisterUserDto } from './dtos/register-user.dto';
 import { UserService } from './user.service';
 import { Message } from 'src/common/decorators/message.decorator';
+import { VerifyUserDto } from './dtos/verify-user.dto';
 
 @Controller('user')
 export class UserController {
@@ -26,10 +28,11 @@ export class UserController {
     return this.userService.register(registeruserDto);
   }
 
-  @Post('/verify/:email/:code')
+  @Post('/verify')
+  @HttpCode(HttpStatus.OK)
   @Message('Success verify your account')
-  async verifyUser(@Param('email') email: string, @Param('code') code: number) {
-    this.userService.verifiyUser(email, code);
+  async verifyUser(@Body() verifyUserDto: VerifyUserDto) {
+    this.userService.verifiyUser(verifyUserDto.email, verifyUserDto.code);
   }
 
   @Get('profile')

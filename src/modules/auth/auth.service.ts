@@ -20,8 +20,6 @@ export class AuthService {
       },
     });
 
-    console.log(user);
-
     if (!user) throw new BadRequestException('User not found!');
 
     if (!user.isVerified) throw new BadRequestException('User not verify yet');

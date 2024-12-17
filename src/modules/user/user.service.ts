@@ -54,7 +54,6 @@ export class UserService {
           removeOnFail: true,
         },
       );
-      console.log(res);
       return createUser;
     } catch (error) {
       console.log(error);

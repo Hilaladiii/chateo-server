@@ -18,7 +18,6 @@ export class EmailQueue {
         html: `<p>Your verification code ${verificationCode}</p>`,
       });
     } catch (error) {
-      console.log('error from email mailer', error);
       throw error;
     }
   }
