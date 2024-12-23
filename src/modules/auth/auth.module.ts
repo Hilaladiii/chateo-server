@@ -6,7 +6,7 @@ import { AuthController } from './auth.controller';
 import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
-  imports: [JwtModule.register({ global: false, secret: jwtConstant })],
+  imports: [JwtModule.register({ global: true, secret: jwtConstant })],
   providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
 })

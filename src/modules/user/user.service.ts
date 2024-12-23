@@ -19,6 +19,15 @@ export class UserService {
     @InjectQueue('email') private emailQueue: Queue,
   ) {}
 
+  async getAll() {
+    return this.prismaService.user.findMany({
+      include: {
+        savedUsers: true,
+        savedByUsers: true,
+      },
+    });
+  }
+
   async register(registerUserDto: RegisterUserDto): Promise<IUserProfile> {
     try {
       const hashedPassword = await argon.hash(registerUserDto.password);

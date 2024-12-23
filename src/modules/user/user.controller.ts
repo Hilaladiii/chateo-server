@@ -16,6 +16,12 @@ import { VerifyUserDto } from './dtos/verify-user.dto';
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @Get()
+  @Message('Success get all users')
+  async getAll() {
+    return await this.userService.getAll();
+  }
+
   @Post('register')
   @Message(
     'success register your account, please check your email for verification',

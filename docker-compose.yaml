@@ -1,4 +1,21 @@
 services:
+  # server:
+  #   container_name: server
+  #   build:
+  #     context: .
+  #     dockerfile: Dockerfile
+  #   depends_on:
+  #     - redis
+  #   ports:
+  #     - 4000:4000
+  #   env_file: .env
+  #   networks:
+  #     - chateo-network
+  #   entrypoint: >
+  #     sh -c "
+  #      npx prisma generate && npx prisma db push && npm run start:prod
+  #     "
+
   redis:
     container_name: redis
     image: redis:latest
@@ -6,8 +23,13 @@ services:
       - 6379:6379
     volumes:
       - redis:/data
+    networks:
+      - chateo-network
 
 volumes:
   redis:
     driver: local
-  chateo:
+
+networks:
+  chateo-network:
+    driver: bridge
